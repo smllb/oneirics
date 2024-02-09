@@ -15,8 +15,8 @@ import java.io.Serializable;
 //@Setter
 public class UserRegistrationDTO implements Serializable {
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Login cannot be blank.")
+    @NotNull(message = "Login can't be null.")
     private String login;
 
     @NotBlank

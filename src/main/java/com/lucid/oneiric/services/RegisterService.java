@@ -4,6 +4,9 @@ import com.lucid.oneiric.dto.UserRegistrationDTO;
 import com.lucid.oneiric.entities.UserEntity;
 import com.lucid.oneiric.enums.AccountType;
 import com.lucid.oneiric.repository.UsersRepository;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,26 +22,25 @@ public class RegisterService {
         this.securePasswordService = securePasswordService;
     }
 
-    public boolean register(UserRegistrationDTO userRegistrationDTO){
-        System.out.println(userRegistrationDTO.getPassword());
+    public ResponseEntity<String> register(UserRegistrationDTO userRegistrationDTO){
+        String result;
+
         if (!usersRepository.findByLogin(userRegistrationDTO.getLogin()).isEmpty()) {
-            System.out.println("Username already exists.");
-            return false;
+            result = "Username already exists.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         } else if (!usersRepository.findByEmail(userRegistrationDTO.getEmail()).isEmpty()) {
-            System.out.println("Email already exists.");
-            return false;
+            result = "Email already exists.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         } else if (userRegistrationDTO.getRecoveryEmail() != null && !usersRepository.findByRecoveryEmail(userRegistrationDTO.getRecoveryEmail()).isEmpty()) {
-            System.out.println("Recovery email already in use.");
-            return false;
+            result = "Recovery email already in use.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
         HashMap<String, String> userPasswordCredentials = securePasswordService.encodeRawPassword(userRegistrationDTO.getPassword());
         AccountType accountType = AccountType.USER;
         UserEntity user = new UserEntity(userRegistrationDTO.getLogin(), userPasswordCredentials.get("salt"),userPasswordCredentials.get("hash"), userRegistrationDTO.getEmail(), userRegistrationDTO.getRecoveryEmail(), accountType.getValue());
-        System.out.println(user.getId());
-        System.out.println(user.getId().getClass());
-        System.out.println(accountType.getValue());
         usersRepository.save(user);
-        return true;
+        result = "User registered successfully.";
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

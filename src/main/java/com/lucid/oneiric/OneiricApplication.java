@@ -20,12 +20,11 @@ public class OneiricApplication {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(OneiricApplication.class, args);
-        System.out.println("ab");
         DatabaseRepository database = new DatabaseRepository();
         database.establishConnection();
         SecurePasswordService encoder = new SecurePasswordService();
-        System.out.println(encoder.encodeRawPassword("paozinho"));
-//        database.spawnDefaultDatabase();
+
+
     }
 
 }

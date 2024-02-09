@@ -1,15 +1,45 @@
 package com.lucid.oneiric.dto;
 
-public class UserDTO {
-    String login, password, email, recoveryEmail;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-    public UserDTO(String login, String password, String email) {
+import java.io.Serializable;
+
+
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Getter
+//@Setter
+public class UserRegistrationDTO implements Serializable {
+
+    @NotBlank
+    @NotNull
+    private String login;
+
+    @NotBlank
+    @NotNull
+    private String password;
+
+    @NotBlank
+    @NotNull
+    private String email;
+
+
+    private String recoveryEmail;
+
+    public UserRegistrationDTO() {
+
+    }
+    public UserRegistrationDTO(String login, String password, String email) {
         this.login = login;
         this.password = password;
         this.email = email;
     }
 
-    public UserDTO(String login, String password, String email, String recovery_email) {
+    public UserRegistrationDTO(String login, String password, String email, String recovery_email) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -30,5 +60,21 @@ public class UserDTO {
 
     public String getRecoveryEmail() {
         return recoveryEmail;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setRecoveryEmail(String recoveryEmail) {
+        this.recoveryEmail = recoveryEmail;
     }
 }

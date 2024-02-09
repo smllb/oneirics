@@ -22,8 +22,8 @@ public class SecurePasswordService {
         String[] passwordParts = encodedPassword.split("\\$");
 
         HashMap<String, String> passwordData = new HashMap<>();
-        passwordData.put("salt", passwordParts[5]);
-        passwordData.put("hash", passwordParts[4]);
+        passwordData.put("salt", passwordParts[4]);
+        passwordData.put("hash", passwordParts[5]);
 
         return passwordData;
 

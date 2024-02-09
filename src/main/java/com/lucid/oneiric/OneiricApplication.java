@@ -25,7 +25,7 @@ public class OneiricApplication {
         database.establishConnection();
         SecurePasswordService encoder = new SecurePasswordService();
         System.out.println(encoder.encodeRawPassword("paozinho"));
-        database.spawnDefaultDatabase();
+//        database.spawnDefaultDatabase();
     }
 
 }

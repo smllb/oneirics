@@ -1,9 +1,6 @@
 package com.lucid.oneiric.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -12,30 +9,34 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue
-    private UUID id;
-    private String login, salt, password, email, recovery_email;
-    private Integer account_type_id;
+    private String id;
+    private String login, salt, password, email;
+    @Column(name = "recovery_email")
+    String recoveryEmail;
+    @Column(name = "account_type_id")
+    private Integer accountTypeId;
 
-    protected UserEntity() {}
+    protected UserEntity() {
 
-    public UserEntity(UUID id, String login, String salt, String password, String email, Integer account_type_id) {
-        this.id = id;
-        this.login = login;
-        this.salt = salt;
-        this.password = password;
-        this.email = email;
-        this.account_type_id = account_type_id;
     }
 
-    public UserEntity(UUID id, String login, String salt, String password, String email, String recovery_email, Integer account_type_id) {
-        this.id = id;
+    public UserEntity(String login, String salt, String password, String email, Integer accountTypeId) {
+        this.id = UUID.randomUUID().toString();;
         this.login = login;
         this.salt = salt;
         this.password = password;
         this.email = email;
-        this.recovery_email = recovery_email;
-        this.account_type_id = account_type_id;
+        this.accountTypeId = accountTypeId;
+    }
+
+    public UserEntity(String login, String salt, String password, String email, String recoveryEmail, Integer accountTypeId) {
+        this.id = UUID.randomUUID().toString();
+        this.login = login;
+        this.salt = salt;
+        this.password = password;
+        this.email = email;
+        this.recoveryEmail = recoveryEmail;
+        this.accountTypeId = accountTypeId;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class UserEntity {
         return String.format("UsersEntity[id=%s, login='%s', email='%s']", id, login, email);
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -63,12 +64,12 @@ public class UserEntity {
         return email;
     }
 
-    public String getRecovery_email() {
-        return recovery_email;
+    public String getRecoveryEmail() {
+        return recoveryEmail;
     }
 
-    public Integer getAccount_type_id() {
-        return account_type_id;
+    public Integer getAccountTypeId() {
+        return accountTypeId;
     }
 
     public void setSalt(String salt) {
@@ -83,11 +84,9 @@ public class UserEntity {
         this.email = email;
     }
 
-    public void setRecovery_email(String recovery_email) {
-        this.recovery_email = recovery_email;
+    public void setRecoveryEmail(String recoveryEmail) {
+        this.recoveryEmail = recoveryEmail;
     }
 
-    public void setAccount_type_id(Integer account_type_id) {
-        this.account_type_id = account_type_id;
-    }
+    public void setAccountTypeId(Integer accountTypeId) { this.accountTypeId = accountTypeId; }
 }

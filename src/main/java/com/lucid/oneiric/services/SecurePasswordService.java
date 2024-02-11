@@ -17,15 +17,9 @@ public class SecurePasswordService {
         this.passwordEncoder= new Argon2PasswordEncoder(16, 32, 1, 4096, 3);
 
     }
-    public HashMap<String, String> encodeRawPassword(String rawPassword) {
-        String encodedPassword =  passwordEncoder.encode(rawPassword);
-        String[] passwordParts = encodedPassword.split("\\$");
+    public String encodeRawPassword(String rawPassword) {
 
-        HashMap<String, String> passwordData = new HashMap<>();
-        passwordData.put("salt", passwordParts[4]);
-        passwordData.put("hash", passwordParts[5]);
-
-        return passwordData;
+        return passwordEncoder.encode(rawPassword);
 
     }
 }

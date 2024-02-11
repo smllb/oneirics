@@ -39,6 +39,8 @@ public class RegisterController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDto, BindingResult bindingResult) {
         return usersService.registerNewUser(userRegistrationDto, bindingResult);
-        
+
     }
+
+
 }

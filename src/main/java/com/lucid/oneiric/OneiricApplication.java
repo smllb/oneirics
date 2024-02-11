@@ -1,6 +1,5 @@
 package com.lucid.oneiric;
 
-import com.lucid.oneiric.repository.DatabaseRepository;
 import com.lucid.oneiric.services.SecurePasswordService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,10 +19,7 @@ public class OneiricApplication {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(OneiricApplication.class, args);
-        DatabaseRepository database = new DatabaseRepository();
-        database.establishConnection();
-        SecurePasswordService encoder = new SecurePasswordService();
-
+        System.out.println("Spring running at port 8443.");
 
     }
 

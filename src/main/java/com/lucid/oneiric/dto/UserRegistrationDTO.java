@@ -7,12 +7,6 @@ import lombok.*;
 
 import java.io.Serializable;
 
-
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Getter
-//@Setter
 public class UserRegistrationDTO implements Serializable {
 
     @NotBlank(message = "Login cannot be blank.")

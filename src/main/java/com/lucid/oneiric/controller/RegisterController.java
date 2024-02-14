@@ -3,7 +3,6 @@ package com.lucid.oneiric.controller;
 import com.lucid.oneiric.dto.UserRegistrationDTO;
 import com.lucid.oneiric.services.UsersService;
 import jakarta.validation.Valid;
-import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ public class RegisterController {
 
     private final UsersService usersService;
     @Autowired
-    private Validator validator;
 
     public RegisterController(UsersService usersService) {
         this.usersService = usersService;

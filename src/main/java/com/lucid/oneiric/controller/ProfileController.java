@@ -15,7 +15,6 @@ public class ProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-        String username = userPrincipal.getUsername();
         return ResponseEntity.ok().body(new Object() {
             public final String username = userPrincipal.getUsername();
             public final String email = userPrincipal.getEmail();

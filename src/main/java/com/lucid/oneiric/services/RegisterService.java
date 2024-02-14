@@ -3,15 +3,12 @@ package com.lucid.oneiric.services;
 import com.lucid.oneiric.dto.UserRegistrationDTO;
 import com.lucid.oneiric.entities.RoleEntity;
 import com.lucid.oneiric.entities.UserEntity;
-import com.lucid.oneiric.enums.AccountType;
 import com.lucid.oneiric.repository.RoleRepository;
 import com.lucid.oneiric.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class RegisterService {

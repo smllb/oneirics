@@ -1,6 +1,5 @@
 package com.lucid.oneiric.security;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -11,7 +10,7 @@ import java.io.IOException;
 public class LogoutHandler extends SimpleUrlLogoutSuccessHandler {
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         if (authentication == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {

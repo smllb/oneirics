@@ -45,8 +45,6 @@ public class LoginController {
     @PostMapping("/logout")
     public void logout(HttpServletRequest request) {
 
-
-
     }
 
 }

@@ -44,10 +44,8 @@ public class RegisterService {
 
         String argon2HashedPassword = securePasswordService.encodeRawPassword(userRegistrationDTO.getPassword());
         RoleEntity defaultUserRole = roleRepository.findByName("ROLE_USER");
-        RoleEntity mockRole = roleRepository.findByName("ROLE_ADMIN");
         UserEntity user = new UserEntity(userRegistrationDTO.getLogin(), argon2HashedPassword, userRegistrationDTO.getEmail(), userRegistrationDTO.getRecoveryEmail());
         user.addRole(defaultUserRole);
-        user.addRole(mockRole);
         usersRepository.save(user);
         result = "User registered successfully.";
         return ResponseEntity.status(HttpStatus.OK).body(result);

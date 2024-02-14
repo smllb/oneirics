@@ -37,6 +37,7 @@ public class UserPrincipal  implements UserDetails {
         return userEntity.getLogin();
     }
 
+    public String getEmail() { return userEntity.getEmail(); }
     @Override
     public boolean isAccountNonExpired() {
         return userEntity.isAccountNonExpired();

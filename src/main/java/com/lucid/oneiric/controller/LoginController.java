@@ -1,7 +1,6 @@
 package com.lucid.oneiric.controller;
 
 import com.lucid.oneiric.dto.UserLoginRequestDTO;
-import com.lucid.oneiric.repository.UsersRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class LoginController {
@@ -33,6 +32,20 @@ public class LoginController {
         repository.saveContext(SecurityContextHolder.getContext(), request, response);
 
         return ResponseEntity.ok().body(String.format("User %s logged in.", userLoginRequestDTO.getUsername()));
+
+    }
+
+    @GetMapping("/csrf")
+    @CrossOrigin
+    public ResponseEntity<String> getCsrfToken(HttpServletRequest request) {
+        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        return ResponseEntity.ok().body(csrf.getToken());
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request) {
+
+
 
     }
 

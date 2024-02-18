@@ -32,11 +32,13 @@ public class SecurityConfig {
                             .ignoringRequestMatchers("/login")
                             .ignoringRequestMatchers("/register")
                             .ignoringRequestMatchers("/logout")
+                            .ignoringRequestMatchers("/newdream")
                     )
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/register").permitAll()
                             .requestMatchers("/login").permitAll()
                             .requestMatchers("/csrf").permitAll()
+                            .requestMatchers("/newdream").permitAll()
                             .anyRequest().authenticated()
                     )
                     .logout(logout -> logout

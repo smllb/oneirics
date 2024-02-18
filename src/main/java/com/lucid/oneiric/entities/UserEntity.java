@@ -23,7 +23,7 @@ public class UserEntity {
     }
 
     public UserEntity(String login, String password, String email) {
-        this.id = UUID.randomUUID().toString();;
+        this.id = UUID.randomUUID().toString();
         this.login = login;
         this.password = password;
         this.email = email;

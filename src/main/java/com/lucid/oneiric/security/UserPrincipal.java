@@ -32,6 +32,9 @@ public class UserPrincipal  implements UserDetails {
         return userEntity.getPassword();
     }
 
+
+    public String getId() { return userEntity.getId(); }
+
     @Override
     public String getUsername() {
         return userEntity.getLogin();

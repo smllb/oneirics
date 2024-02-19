@@ -1,10 +1,13 @@
 package com.lucid.oneiric.repository;
 
+import com.lucid.oneiric.dto.DreamDTO;
 import com.lucid.oneiric.entities.DreamEntity;
 import com.lucid.oneiric.entities.RoleEntity;
 import lombok.NonNull;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -17,15 +20,43 @@ public interface DreamRepository extends JpaRepository<DreamEntity, String> {
     @Override
     public Optional<DreamEntity> findById(@NonNull  String id);
 
-    public List<DreamEntity> findAllByAuthorId(@NonNull String id);
+//    public List<DreamEntity> findAllByAuthorId(@NonNull String id);
 
-
-    public List<DreamEntity> findAllByAuthorIdAndCreationDate(@NonNull String authorId, @NonNull LocalDate creationDate);
-
-    public List<DreamEntity> findAllByAuthorIdAndVisibilityId(@NonNull String authorId, @NonNull Integer visibilityId);
-
-    public List<DreamEntity> findAllByVisibilityId(@NonNull Integer visibilityId);
+//    public List<DreamEntity> findAllByAuthorIdAndCreationDate(@NonNull String authorId, @NonNull LocalDate creationDate);
+//
+//    public List<DreamEntity> findAllByAuthorIdAndVisibilityId(@NonNull String authorId, @NonNull Integer visibilityId);
+//
+//    public List<DreamEntity> findAllByVisibilityId(@NonNull Integer visibilityId);
 
     public List<DreamEntity> findAllByDreamTitleLikeIgnoreCase(@NonNull String dreamTitle);
+
+    @Query("SELECT new com.lucid.oneiric.dto.DreamDTO(d.id, d.creationDate, u.login, dt.kind, dc.category, v.name, d.dreamContent, d.dreamTitle) " +
+            "FROM DreamEntity d " +
+            "INNER JOIN d.userEntity u " +
+            "INNER JOIN d.dreamKindEntity dt " +
+            "INNER JOIN d.dreamCategoryEntity dc " +
+            "INNER JOIN d.visibilityEntity v " +
+            "WHERE d.id = :id")
+    DreamDTO fillDreamDTOById(@Param("id") String id);
+
+    @Query("SELECT new com.lucid.oneiric.dto.DreamDTO(d.id, d.creationDate, u.login, dt.kind, dc.category, v.name, d.dreamContent, d.dreamTitle) " +
+            "FROM DreamEntity d " +
+            "INNER JOIN d.userEntity u " +
+            "INNER JOIN d.dreamKindEntity dt " +
+            "INNER JOIN d.dreamCategoryEntity dc " +
+            "INNER JOIN d.visibilityEntity v " +
+            "WHERE v.id = :id")
+    List<DreamDTO> fillDreamDTOByVisibility(@Param("id") String id);
+
+    @Query("SELECT new com.lucid.oneiric.dto.DreamDTO(d.id, d.creationDate, u.login, dt.kind, dc.category, v.name, d.dreamContent, d.dreamTitle) " +
+            "FROM DreamEntity d " +
+            "INNER JOIN d.userEntity u " +
+            "INNER JOIN d.dreamKindEntity dt " +
+            "INNER JOIN d.dreamCategoryEntity dc " +
+            "INNER JOIN d.visibilityEntity v " +
+            "WHERE u.id = :authorId "
+    )
+    List<DreamDTO> fillDreamDTOByUser(@Param("authorId") String authorId);
+    // i'll see what i do later.if i don't get a better idea, i'll just fill DreamEntities and convert them into the needed DTO but i feel like filling the all entities inside a dreamentity all the time is not very performative
 
 }

@@ -6,96 +6,88 @@ import jakarta.persistence.Column;
 import java.time.LocalDateTime;
 
 public class DreamDTO {
-    private String dreamId;
-    private String authorId;
-    private Integer dreamKind;
-    private Integer dreamCategoryId;
+    private String id;
     private LocalDateTime creationDate;
-    private Integer visibilityId;
-    private String dreamTitle;
+    private String authorName;
+    private String dreamKind;
+    private String dreamCategory;
+    private String visibilityName;
+
     private String dreamContent;
+    private String dreamTitle;
 
-    public DreamDTO(String dreamId) {
-
-        this.dreamId = dreamId;
-    }
-
-    public DreamDTO(String dreamId, String authorId, Integer dreamKind, Integer dreamCategoryId, LocalDateTime creationDate, Integer visibilityId, String dreamTitle, String dreamContent) {
-        this.dreamId = dreamId;
-        this.authorId = authorId;
-        this.dreamKind = dreamKind;
-        this.dreamCategoryId = dreamCategoryId;
+    public DreamDTO(String id, LocalDateTime creationDate, String authorName, String dreamKind, String dreamCategory, String visibilityName, String dreamContent, String dreamTitle) {
+        this.id = id;
         this.creationDate = creationDate;
-        this.visibilityId = visibilityId;
-        this.dreamTitle = dreamTitle;
+        this.authorName = authorName;
+        this.dreamKind = dreamKind;
+        this.dreamCategory = dreamCategory;
+        this.visibilityName = visibilityName;
         this.dreamContent = dreamContent;
+        this.dreamTitle = dreamTitle;
     }
 
-    public DreamDTO() {
-
+    public String getId() {
+        return id;
     }
 
-    public String getDreamId() {
-        return dreamId;
-    }
-
-    public void setDreamId(String dreamId) {
-        this.dreamId = dreamId;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public Integer getDreamKind() {
-        return dreamKind;
-    }
-
-    public Integer getDreamCategoryId() {
-        return dreamCategoryId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public Integer getVisibilityId() {
-        return visibilityId;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public String getDreamTitle() {
-        return dreamTitle;
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getDreamKind() {
+        return dreamKind;
+    }
+
+    public void setDreamKind(String dreamKind) {
+        this.dreamKind = dreamKind;
+    }
+
+    public String getDreamCategory() {
+        return dreamCategory;
+    }
+
+    public void setDreamCategory(String dreamCategory) {
+        this.dreamCategory = dreamCategory;
+    }
+
+    public String getVisibilityName() {
+        return visibilityName;
+    }
+
+    public void setVisibilityName(String visibilityName) {
+        this.visibilityName = visibilityName;
     }
 
     public String getDreamContent() {
         return dreamContent;
     }
 
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
+    public void setDreamContent(String dreamContent) {
+        this.dreamContent = dreamContent;
     }
 
-    public void setDreamKind(Integer dreamKind) {
-        this.dreamKind = dreamKind;
-    }
-
-    public void setDreamCategoryId(Integer dreamCategoryId) {
-        this.dreamCategoryId = dreamCategoryId;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public void setVisibilityId(Integer visibilityId) {
-        this.visibilityId = visibilityId;
+    public String getDreamTitle() {
+        return dreamTitle;
     }
 
     public void setDreamTitle(String dreamTitle) {
         this.dreamTitle = dreamTitle;
-    }
-
-    public void setDreamContent(String dreamContent) {
-        this.dreamContent = dreamContent;
     }
 }

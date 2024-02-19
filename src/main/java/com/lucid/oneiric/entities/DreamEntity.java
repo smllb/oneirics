@@ -1,10 +1,8 @@
 package com.lucid.oneiric.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
+import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,16 +14,23 @@ public class DreamEntity {
     @Id
     private String id;
 
-    @Column(name = "author_id")
-    private String authorId;
-    @Column(name = "dream_kind")
-    private Integer dreamKind;
-    @Column(name = "dream_category_id")
-    private Integer dreamCategoryId;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private UserEntity userEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "dream_kind")
+    private DreamTypeEntity dreamKindEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "dream_category_id")
+    private DreamCategoryEntity dreamCategoryEntity;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
-    @Column(name = "visibility_id")
-    private Integer visibilityId;
+
+    @ManyToOne
+    @JoinColumn(name = "visibility_id")
+    private VisibilityEntity visibilityEntity;
 
     @Column(name = "dream_title")
     private String dreamTitle;
@@ -35,79 +40,80 @@ public class DreamEntity {
     protected DreamEntity() {
     }
 
-    public DreamEntity(String authorId, String dreamTitle, String dreamContent, Integer dreamKind, Integer dreamCategoryId, Integer visibilityId) {
-        this.id = UUID.randomUUID().toString();
-        this.authorId = authorId;
+
+
+    public DreamEntity(UserEntity userEntity, DreamTypeEntity dreamKindEntity, DreamCategoryEntity dreamCategoryEntity, VisibilityEntity visibilityEntity, String dreamTitle, String dreamContent) {
+        this.userEntity = userEntity;
+        this.dreamKindEntity = dreamKindEntity;
+        this.dreamCategoryEntity = dreamCategoryEntity;
+        this.visibilityEntity = visibilityEntity;
         this.dreamTitle = dreamTitle;
         this.dreamContent = dreamContent;
-        this.dreamKind = dreamKind;
-        this.dreamCategoryId = dreamCategoryId;
+        this.id = UUID.randomUUID().toString();
         this.creationDate = LocalDateTime.now();
-        this.visibilityId = visibilityId;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getAuthorId() {
-        return authorId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Integer getDreamKind() {
-        return dreamKind;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public Integer getDreamCategoryId() {
-        return dreamCategoryId;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public DreamTypeEntity getDreamKindEntity() {
+        return dreamKindEntity;
+    }
+
+    public void setDreamKindEntity(DreamTypeEntity dreamKindEntity) {
+        this.dreamKindEntity = dreamKindEntity;
+    }
+
+    public DreamCategoryEntity getDreamCategoryEntity() {
+        return dreamCategoryEntity;
+    }
+
+    public void setDreamCategoryEntity(DreamCategoryEntity dreamCategoryEntity) {
+        this.dreamCategoryEntity = dreamCategoryEntity;
     }
 
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public Integer getVisibilityId() {
-        return visibilityId;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public void setDreamKind(Integer dreamKind) {
-        this.dreamKind = dreamKind;
-    }
-
-    public void setDreamCategory(Integer dreamCategoryId) {
-        this.dreamCategoryId = dreamCategoryId;
-    }
-
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public void setVisibilityId(Integer visibilityId) {
-        this.visibilityId = visibilityId;
+    public VisibilityEntity getVisibilityEntity() {
+        return visibilityEntity;
+    }
+
+    public void setVisibilityEntity(VisibilityEntity visibilityEntity) {
+        this.visibilityEntity = visibilityEntity;
     }
 
     public String getDreamTitle() {
         return dreamTitle;
     }
 
-    public String getDreamContent() {
-        return dreamContent;
-    }
-
-    public void setDreamCategoryId(Integer dreamCategoryId) {
-        this.dreamCategoryId = dreamCategoryId;
-    }
-
     public void setDreamTitle(String dreamTitle) {
         this.dreamTitle = dreamTitle;
     }
 
+    public String getDreamContent() {
+        return dreamContent;
+    }
+
+    public void setDreamContent(String dreamContent) {
+        this.dreamContent = dreamContent;
+    }
 }

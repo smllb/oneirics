@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: '6.2.1'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

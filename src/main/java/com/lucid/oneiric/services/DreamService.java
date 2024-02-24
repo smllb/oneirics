@@ -5,14 +5,14 @@ import com.lucid.oneiric.dto.UserNewDreamDTO;
 import com.lucid.oneiric.entities.*;
 import com.lucid.oneiric.repository.*;
 import com.lucid.oneiric.security.UserPrincipal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class DreamService {
@@ -52,7 +52,37 @@ public class DreamService {
     }
 
     public DreamDTO getDreamById(String dreamId) {
-        return dreamRepository.fillDreamDTOById(dreamId);
+        return dreamRepository.fillDreamDTOByDreamId(dreamId);
+
+    }
+    
+    public List<DreamDTO>  getDreamsByVisibilityId(String visibilityId) {
+        try {
+            List<DreamDTO> dreams = dreamRepository.fillDreamListByVisibility(visibilityId);
+            return dreams;
+//            return new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(dreams);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return Collections.emptyList();
+
+    }
+
+
+    public List<DreamDTO> getDreamsByUser(String username) {
+        try {
+            List<DreamDTO> dreams = dreamRepository.fillDreamListByUsername(username);
+            return dreams;
+//            return new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(dreams);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+
+        }
+        return Collections.emptyList();
 
     }
 

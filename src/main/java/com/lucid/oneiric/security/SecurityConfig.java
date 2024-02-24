@@ -39,6 +39,8 @@ public class SecurityConfig {
                             .requestMatchers("/login").permitAll()
                             .requestMatchers("/csrf").permitAll()
                             .requestMatchers("/newdream").permitAll()
+                            .requestMatchers("/isLoggedIn").permitAll()
+                            .requestMatchers("/logout").permitAll()
                             .anyRequest().authenticated()
                     )
                     .logout(logout -> logout

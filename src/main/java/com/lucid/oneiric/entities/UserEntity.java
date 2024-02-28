@@ -16,7 +16,13 @@ public class UserEntity {
     private String password;
     private String email;
     @Column(name = "recovery_email")
-    String recoveryEmail;
+    private String recoveryEmail;
+
+    @Column(name = "lucid_dream_count")
+    private Integer lucidDreamCount;
+    @Column(name = "regular_dream_count")
+    private Integer regularDreamCount;
+    private String status;
 
     protected UserEntity() {
 
@@ -27,6 +33,9 @@ public class UserEntity {
         this.login = login;
         this.password = password;
         this.email = email;
+        this.regularDreamCount = 0;
+        this.lucidDreamCount = 0;
+        this.status = "ACTIVE";
     }
 
     public UserEntity(String id, String login, String password, String email, String recoveryEmail) {
@@ -35,6 +44,9 @@ public class UserEntity {
         this.password = password;
         this.email = email;
         this.recoveryEmail = recoveryEmail;
+        this.regularDreamCount = 0;
+        this.lucidDreamCount = 0;
+        this.status = "ACTIVE";
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -101,6 +113,18 @@ public class UserEntity {
         this.recoveryEmail = recoveryEmail;
     }
 
+    public Integer getLucidDreamCount() { return lucidDreamCount; }
+
+    public void setLucidDreamCount(Integer lucidDreamCount) { this.lucidDreamCount = lucidDreamCount; }
+
+    public Integer getRegularDreamCount() { return regularDreamCount; }
+
+    public void setRegularDreamCount(Integer regularDreamCount) { this.regularDreamCount = regularDreamCount; }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
+
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -114,6 +138,16 @@ public class UserEntity {
 
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean isAdmin() {
+        for (RoleEntity role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+               return true;
+            }
+
+        }
+        return false;
     }
 
 }

@@ -1,8 +1,5 @@
 package com.lucid.oneiric.dto;
 
-import com.lucid.oneiric.entities.DreamEntity;
-import jakarta.persistence.Column;
-
 import java.time.LocalDateTime;
 
 public class DreamDTO {
@@ -15,6 +12,10 @@ public class DreamDTO {
 
     private String dreamContent;
     private String dreamTitle;
+
+    public DreamDTO() {
+
+    }
 
     public DreamDTO(String id, LocalDateTime creationDate, String authorName, String dreamKind, String dreamCategory, String visibilityName, String dreamContent, String dreamTitle) {
         this.id = id;
@@ -51,7 +52,7 @@ public class DreamDTO {
         this.authorName = authorName;
     }
 
-    public String getDreamKind() {
+    public String getDreamKind(String kind) {
         return dreamKind;
     }
 

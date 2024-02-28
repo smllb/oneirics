@@ -17,6 +17,9 @@ public interface UsersRepository extends JpaRepository<UserEntity, String> {
     List<UserEntity> findByEmail(String email);
     List<UserEntity> findByRecoveryEmail(String recoveryEmail);
 
+
+    void deleteById(@NonNull String id);
+
     default void deleteByUsername(String login) {
         List<UserEntity> loginQueryResult = findByLogin(login);
         if (loginQueryResult.isEmpty()) {

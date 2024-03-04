@@ -15,12 +15,14 @@ public class DreamMapper {
         try {
             DreamDTO dreamDTO = new DreamDTO();
             DreamEntity dreamEntity = dreamEntityOptional.get();
+            dreamDTO.setId(dreamEntity.getId());
             dreamDTO.setDreamTitle(dreamEntity.getDreamTitle());
             dreamDTO.setDreamContent(dreamEntity.getDreamContent());
             dreamDTO.setDreamCategory(dreamEntity.getDreamCategoryEntity().getcategory());
             dreamDTO.setCreationDate(dreamEntity.getCreationDate());
             dreamDTO.setDreamKind(dreamEntity.getDreamKindEntity().getKind());
             dreamDTO.setAuthorName(dreamEntity.getUserEntity().getLogin());
+            dreamDTO.setVisibilityName(dreamEntity.getVisibilityEntity().getName());
 
             return dreamDTO;
 

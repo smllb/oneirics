@@ -23,7 +23,7 @@ public class RegisterController {
 
     }
 
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDto, BindingResult bindingResult) {
         return usersService.registerNewUser(userRegistrationDto, bindingResult);

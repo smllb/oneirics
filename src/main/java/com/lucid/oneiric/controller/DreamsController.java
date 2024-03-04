@@ -9,6 +9,7 @@ import com.lucid.oneiric.services.DreamService;
 import com.lucid.oneiric.services.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +27,22 @@ public class DreamsController {
         this.usersService = usersService;
     }
 
-    @PostMapping("/dream/create")
+    @PostMapping("/dreams/create")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<String> newDream(@RequestBody UserNewDreamDTO userNewDreamDTO) {
         System.out.println(userNewDreamDTO.toString());
         return dreamService.saveNewDream((userNewDreamDTO));
     }
 
-    @GetMapping("/dream/search/{id}")
+    @GetMapping("/dreams/search/id/{id}")
     public ResponseEntity<DreamDTO> getDreamByDreamId(@PathVariable String id) {
         System.out.println(id);
         DreamEntity dream = dreamService.getDreamEntityById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (dream != null) {
             if (dream.getVisibilityEntity().getId().equals(1)) {
-                if (SecurityContextHolder.getContext().getAuthentication().getName().equals(dream.getUserEntity().getLogin())) {
+                if (authentication.getName().equals(dream.getUserEntity().getLogin()) || authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
                     return ResponseEntity.ok(dreamService.toDTO(dream));
                 }
                 return ResponseEntity.status(403).build();
@@ -86,8 +89,8 @@ public class DreamsController {
 
     }
 
-    @DeleteMapping("dreams/remove/{dreamId}")
-    public ResponseEntity<String> removeDreamById(@PathVariable String dreamId) {
+    @DeleteMapping("dreams/delete/id/{dreamId}")
+    public ResponseEntity<String> deleteDreamById(@PathVariable String dreamId) {
         UserEntity user = usersService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         DreamEntity dreamToBeRemoved = dreamService.getDreamEntityById(dreamId);
         if (dreamToBeRemoved == null) {

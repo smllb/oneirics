@@ -133,7 +133,7 @@ public class UserEntity {
         return true;
     }
     public boolean isAccountNonLocked() {
-        return true;
+        return this.status.equals("ACTIVE");
     }
 
     public boolean isEnabled() {

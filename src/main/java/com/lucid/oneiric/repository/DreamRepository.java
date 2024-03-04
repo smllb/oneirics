@@ -1,11 +1,8 @@
 package com.lucid.oneiric.repository;
 
-import com.lucid.oneiric.dto.DreamDTO;
 import com.lucid.oneiric.entities.DreamEntity;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

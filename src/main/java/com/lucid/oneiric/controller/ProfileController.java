@@ -1,8 +1,6 @@
 package com.lucid.oneiric.controller;
 
 import com.lucid.oneiric.dto.UserPublicViewDTO;
-import com.lucid.oneiric.entities.UserEntity;
-import com.lucid.oneiric.security.UserPrincipal;
 import com.lucid.oneiric.services.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

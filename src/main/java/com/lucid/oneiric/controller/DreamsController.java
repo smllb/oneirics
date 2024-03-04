@@ -68,7 +68,7 @@ public class DreamsController {
 
     }
 
-    @GetMapping("dreams/search/session/")
+    @GetMapping("dreams/search/session")
     public ResponseEntity<List<DreamDTO>> getAllDreamsByUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<DreamDTO> userDreams = dreamService.getDreamsByUser(username);

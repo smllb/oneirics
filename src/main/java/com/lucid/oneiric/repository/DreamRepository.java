@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public interface DreamRepository extends JpaRepository<DreamEntity, String> {
     @Override
     Optional<DreamEntity> findById(@NonNull  String id);
 
-
+    List<DreamEntity> findAllByCreationDateBetween(LocalDateTime start, LocalDateTime end);
      List<DreamEntity> findAllByDreamTitleLikeIgnoreCase(String dreamTitle);
 
      DreamEntity findByVisibilityEntityId(Integer visibilityId);

@@ -14,6 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +42,27 @@ public class DreamService {
     }
 
 
+    public List<DreamDTO> getAllAccessibleDreamsFromToday() {
+        List<DreamEntity> dreams = dreamRepository.findAllByCreationDateBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX));
+        List<DreamDTO> dreamsDTO = new ArrayList<>();
+        String clientName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        for (DreamEntity dream : dreams) {
+            System.out.println(clientName + dream.getUserEntity().getLogin());
+            if (dream.getVisibilityEntity().getId().equals(1) && dream.getUserEntity().getLogin().equals(clientName)) {
+
+                dreamsDTO.add(dreamMapper.dreamEntityToDto(Optional.ofNullable(dream)));
+
+            }
+            if (!dream.getVisibilityEntity().getId().equals(1)) {
+                dreamsDTO.add(dreamMapper.dreamEntityToDto(Optional.ofNullable(dream)));
+            }
+
+        }
+        return dreamsDTO;
+
+    }
+
     @Transactional
     public ResponseEntity<String> saveNewDream(UserNewDreamDTO userNewDreamDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -54,9 +78,9 @@ public class DreamService {
         try {
             dreamRepository.save(newDream);
             if (dreamKind.getId().equals(1)) {
-                author.setRegularDreamCount(author.getRegularDreamCount()+1);
+                author.setLucidDreamCount(author.getLucidDreamCount()+1);
             } else {
-                author.setLucidDreamCount(author.getRegularDreamCount()+1);
+                author.setRegularDreamCount(author.getRegularDreamCount()+1);
             }
             return ResponseEntity.status(HttpStatus.OK).body(newDream.getId());
 

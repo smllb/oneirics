@@ -32,6 +32,14 @@ public class DreamsController {
     public ResponseEntity<String> newDream(@RequestBody UserNewDreamDTO userNewDreamDTO) {
         System.out.println(userNewDreamDTO.toString());
         return dreamService.saveNewDream((userNewDreamDTO));
+
+
+    }
+
+    @GetMapping("/dreams/search/daily")
+    public ResponseEntity<List<DreamDTO>> getDailyDreams() {
+        return ResponseEntity.ok(dreamService.getAllAccessibleDreamsFromToday());
+
     }
 
     @GetMapping("/dreams/search/id/{id}")

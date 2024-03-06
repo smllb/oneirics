@@ -74,6 +74,9 @@ public class UserEntity {
         this.password = password;
         this.email = email;
         this.recoveryEmail = recoveryEmail;
+        this.lucidDreamCount = 0;
+        this.regularDreamCount = 0;
+        this.status = "ACTIVE";
     }
   
     @Override

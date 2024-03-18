@@ -1,15 +1,14 @@
 package com.lucid.oneiric.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lucid.oneiric.dto.DreamDTO;
 import com.lucid.oneiric.dto.UserNewDreamDTO;
 import com.lucid.oneiric.entities.DreamEntity;
 import com.lucid.oneiric.entities.UserEntity;
+import com.lucid.oneiric.security.UserPrincipal;
 import com.lucid.oneiric.services.DreamService;
 import com.lucid.oneiric.services.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/dreams")
 public class DreamsController {
 
     public DreamService dreamService;
@@ -27,7 +27,7 @@ public class DreamsController {
         this.usersService = usersService;
     }
 
-    @PostMapping("/dreams/create")
+    @PostMapping("/create")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<String> newDream(@RequestBody UserNewDreamDTO userNewDreamDTO) {
         System.out.println(userNewDreamDTO.toString());
@@ -36,43 +36,44 @@ public class DreamsController {
 
     }
 
-    @GetMapping("/dreams/search/daily")
+    @GetMapping("search/daily")
     public ResponseEntity<List<DreamDTO>> getDailyDreams() {
         return ResponseEntity.ok(dreamService.getAllAccessibleDreamsFromToday());
 
     }
 
-    @GetMapping("/dreams/search/id/{id}")
-    public ResponseEntity<DreamDTO> getDreamByDreamId(@PathVariable String id) {
-        System.out.println(id);
-        DreamEntity dream = dreamService.getDreamEntityById(id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @GetMapping(value = "search", params = "dream")
+    public ResponseEntity<DreamDTO> getDreamByDreamId(@RequestParam String dream) {
+        DreamEntity dreamEntity = dreamService.getDreamEntityById(dream);
 
-        if (dream != null) {
-            if (dream.getVisibilityEntity().getId().equals(1)) {
-                if (authentication.getName().equals(dream.getUserEntity().getLogin()) || authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
-                    return ResponseEntity.ok(dreamService.toDTO(dream));
-                }
-                return ResponseEntity.status(403).build();
-            } else {
-                return ResponseEntity.ok(dreamService.toDTO(dream));
-            }
+        if (dream == null) {
+           return ResponseEntity.status(404).build();
         }
 
-        return ResponseEntity.status(400).build();
+        UserPrincipal client = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean isAuthorOrAdmin = client.getUsername().equals(dreamEntity.getUserEntity().getLogin()) || client.isAdmin();
+        boolean isDreamPrivate = dreamEntity.getVisibilityEntity().getId().equals(1);
+
+        if (isDreamPrivate && !isAuthorOrAdmin) {
+            return ResponseEntity.status(403).build();
+
+        }
+
+        return ResponseEntity.ok(dreamService.toDTO(dreamEntity));
+
     }
 
-    @GetMapping("/dreams/search/public")
-    public ResponseEntity<List<DreamDTO>> getAllPublicDreams() {
-        return ResponseEntity.ok(dreamService.getDreamsDTOByVisibilityId(2));
+    @GetMapping(value = "search/public", params = {"page", "items" })
+    public ResponseEntity<List<DreamDTO>> getAllPublicDreams(Integer page, Integer items) {
+        return ResponseEntity.ok(dreamService.getDreamsDTOByVisibilityId(2, page, items));
 
-    }
+    } // mess here
 
 
     // only for adm
-    @GetMapping("/dreams/search/visibility/{visibilityId}")
-    public ResponseEntity<List<DreamDTO>> getAllDreamsByVisibilityId(@PathVariable Integer visibilityId) throws JsonProcessingException {
-        return ResponseEntity.ok(dreamService.getDreamsDTOByVisibilityId(visibilityId));
+    @GetMapping(value = "search", params = {"visibility", "page", "items"})
+    public ResponseEntity<List<DreamDTO>> getAllDreamsByVisibilityId(@RequestParam Integer visibility, @RequestParam Integer page, @RequestParam Integer items) {
+        return ResponseEntity.ok(dreamService.getDreamsDTOByVisibilityId(visibility, page, items));
 
     }
 
@@ -84,7 +85,7 @@ public class DreamsController {
 
     }
 
-    @GetMapping("dreams/search/user/{username}")
+    @GetMapping("search/user/{username}")
     public ResponseEntity<List<DreamDTO>> getAllDreamsByUser(@PathVariable String username) {
         List<DreamDTO> userDreams = new ArrayList<>();
 
@@ -97,7 +98,7 @@ public class DreamsController {
 
     }
 
-    @DeleteMapping("dreams/delete/id/{dreamId}")
+    @DeleteMapping("delete/id/{dreamId}")
     public ResponseEntity<String> deleteDreamById(@PathVariable String dreamId) {
         UserEntity user = usersService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         DreamEntity dreamToBeRemoved = dreamService.getDreamEntityById(dreamId);

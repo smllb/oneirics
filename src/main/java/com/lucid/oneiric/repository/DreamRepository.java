@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +17,17 @@ public interface DreamRepository extends JpaRepository<DreamEntity, String> {
     Optional<DreamEntity> findById(@NonNull  String id);
 
     List<DreamEntity> findAllByCreationDateBetween(LocalDateTime start, LocalDateTime end);
-     List<DreamEntity> findAllByDreamTitleLikeIgnoreCase(String dreamTitle);
 
      DreamEntity findByVisibilityEntityId(Integer visibilityId);
 
-     List<DreamEntity> findAllByVisibilityEntityId(Integer visibilityId);
+     List<DreamEntity> findAllByVisibilityEntityId(Integer visibilityId, Pageable page);
 
      Optional<List<DreamEntity>> findAllByUserEntityLoginAndVisibilityEntityId(String userEntity_login, Integer visibilityEntity_id);
 
      List<DreamEntity> findAllByUserEntityLogin(String userEntity_login);
 
      List<DreamEntity> findAllByDreamCategoryEntityId(Integer dreamCategoryEntity_id);
+
      void deleteById(@NonNull String id);
 
      void deleteAllByUserEntityLogin(@NonNull String userEntity_login);

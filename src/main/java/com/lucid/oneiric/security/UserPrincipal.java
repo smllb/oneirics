@@ -60,4 +60,7 @@ public class UserPrincipal  implements UserDetails {
     public boolean isEnabled() {
         return userEntity.isEnabled();
     }
+
+    public boolean isAdmin() { return userEntity.isAdmin(); }
+
 }

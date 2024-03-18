@@ -8,12 +8,14 @@ import com.lucid.oneiric.repository.*;
 import com.lucid.oneiric.security.UserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,7 +50,6 @@ public class DreamService {
         String clientName = SecurityContextHolder.getContext().getAuthentication().getName();
 
         for (DreamEntity dream : dreams) {
-            System.out.println(clientName + dream.getUserEntity().getLogin());
             if (dream.getVisibilityEntity().getId().equals(1) && dream.getUserEntity().getLogin().equals(clientName)) {
 
                 dreamsDTO.add(dreamMapper.dreamEntityToDto(Optional.ofNullable(dream)));
@@ -104,14 +105,16 @@ public class DreamService {
 
     }
 
-    public List<DreamDTO> getDreamsDTOByVisibilityId(Integer visibilityId) {
+    public List<DreamDTO> getDreamsDTOByVisibilityId(Integer visibilityId, Integer page, Integer itemsPerPage) {
+
         try {
             List<DreamDTO> dreamsDTO = new ArrayList<>();
-            Optional<List<DreamEntity>> optionalDreams = Optional.ofNullable(dreamRepository.findAllByVisibilityEntityId(visibilityId));
+            Optional<List<DreamEntity>> optionalDreams = Optional.ofNullable(dreamRepository.findAllByVisibilityEntityId(visibilityId, PageRequest.of(page, itemsPerPage)));
 
             if (optionalDreams.isPresent()) {
                 for (DreamEntity dream : optionalDreams.get()) {
                     dreamsDTO.add(dreamMapper.dreamEntityToDto(Optional.ofNullable(dream)));
+
                 }
                 return dreamsDTO;
             }
@@ -136,8 +139,8 @@ public class DreamService {
         return null;
 
     }
-    public List<DreamEntity> getAllDreamEntitiesByVisibilityId(Integer visibilityId) {
-        return dreamRepository.findAllByVisibilityEntityId(visibilityId);
+    public List<DreamEntity> getAllDreamEntitiesByVisibilityId(Integer visibilityId, Integer page, Integer itemsPerPage) {
+        return dreamRepository.findAllByVisibilityEntityId(visibilityId, (Pageable) PageRequest.of(page,itemsPerPage));
 
     }
     public List<DreamEntity> getAllByUserEntityLogin(String entityLogin) {

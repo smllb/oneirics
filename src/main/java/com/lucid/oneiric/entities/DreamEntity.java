@@ -18,11 +18,11 @@ public class DreamEntity {
     @JoinColumn(name = "author_id")
     private UserEntity userEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dream_kind")
     private DreamTypeEntity dreamKindEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dream_category_id")
     private DreamCategoryEntity dreamCategoryEntity;
     @Column(name = "creation_date")

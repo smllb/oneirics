@@ -52,7 +52,7 @@ public class DreamDTO {
         this.authorName = authorName;
     }
 
-    public String getDreamKind(String kind) {
+    public String getDreamKind() {
         return dreamKind;
     }
 

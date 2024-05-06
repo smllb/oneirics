@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 import java.util.ArrayList;
@@ -24,30 +26,30 @@ public class SecurityConfig {
     }
 
     @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(new CookieCsrfTokenRepository())
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/user/login", "POST"))
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/user/register", "POST"))
 
-                    .csrf((csrf) -> csrf
-                            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                            .ignoringRequestMatchers("/login")
-                            .ignoringRequestMatchers("/register")
-                            .ignoringRequestMatchers("/logout")
-                            .ignoringRequestMatchers("/newdream")
-                    )
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/register").permitAll()
-                            .requestMatchers("/login").permitAll()
-                            .requestMatchers("/csrf").permitAll()
-                            .requestMatchers("/newdream").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .logout(logout -> logout
-                            .logoutSuccessHandler(new LogoutHandler())
-                    );
-
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/user/register").anonymous()
+                        .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/isactive").permitAll()
+                        .requestMatchers("/dreams/search/visibility/").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessHandler(new LogoutHandler())
+                );
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(OneiricUserDetailsService oneiricUserDetailsService, Argon2PasswordEncoder argon2PasswordEncoder) {

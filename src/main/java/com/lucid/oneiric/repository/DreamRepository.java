@@ -1,13 +1,12 @@
 package com.lucid.oneiric.repository;
 
 import com.lucid.oneiric.entities.DreamEntity;
-import com.lucid.oneiric.entities.RoleEntity;
 import lombok.NonNull;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import org.springframework.data.domain.Pageable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,17 +14,31 @@ import java.util.Optional;
 public interface DreamRepository extends JpaRepository<DreamEntity, String> {
     @NonNull
     @Override
-    public Optional<DreamEntity> findById(@NonNull  String id);
+    Optional<DreamEntity> findById(@NonNull  String id);
 
-    public List<DreamEntity> findAllByAuthorId(@NonNull String id);
+    List<DreamEntity> findAllByCreationDateBetween(LocalDateTime start, LocalDateTime end);
+
+     DreamEntity findByVisibilityEntityId(Integer visibilityId);
+
+     List<DreamEntity> findAllByVisibilityEntityId(Integer visibilityId, Pageable page);
+
+     Optional<List<DreamEntity>> findAllByUserEntityLoginAndVisibilityEntityId(String userEntity_login, Integer visibilityEntity_id);
+
+     List<DreamEntity> findAllByUserEntityLogin(String userEntity_login);
+
+     List<DreamEntity> findAllByDreamCategoryEntityId(Integer dreamCategoryEntity_id);
+
+     void deleteById(@NonNull String id);
+
+     void deleteAllByUserEntityLogin(@NonNull String userEntity_login);
 
 
-    public List<DreamEntity> findAllByAuthorIdAndCreationDate(@NonNull String authorId, @NonNull LocalDate creationDate);
 
-    public List<DreamEntity> findAllByAuthorIdAndVisibilityId(@NonNull String authorId, @NonNull Integer visibilityId);
 
-    public List<DreamEntity> findAllByVisibilityId(@NonNull Integer visibilityId);
 
-    public List<DreamEntity> findAllByDreamTitleLikeIgnoreCase(@NonNull String dreamTitle);
+
+
+
+    // i'll see what i do later.if i don't get a better idea, i'll just fill DreamEntities and convert them into the needed DTO but i feel like filling the all entities inside a dreamentity all the time is not very performative
 
 }

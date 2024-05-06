@@ -11,15 +11,23 @@ public class UserNewDreamDTO {
     @NotBlank
     private Integer dreamKind;
 
+    @NotBlank
+    private Integer dreamCategory;
+
+    @NotBlank
+    private Integer visibilityId;
+
 
     public UserNewDreamDTO() {
 
     }
 
-    public UserNewDreamDTO(String dreamTitle, String dreamContent, Integer dreamKind) {
+    public UserNewDreamDTO(String dreamTitle, String dreamContent, Integer dreamKind, Integer dreamCategory, Integer visibilityId) {
         this.dreamTitle = dreamTitle;
         this.dreamContent = dreamContent;
         this.dreamKind = dreamKind;
+        this.dreamCategory = dreamCategory;
+        this.visibilityId = visibilityId;
     }
 
     public String getDreamTitle() {
@@ -44,6 +52,22 @@ public class UserNewDreamDTO {
 
     public void setDreamKind(Integer dreamKind) {
         this.dreamKind = dreamKind;
+    }
+
+    public Integer getDreamCategory() {
+        return dreamCategory;
+    }
+
+    public void setDreamCategory(Integer dreamCategory) {
+        this.dreamCategory = dreamCategory;
+    }
+
+    public Integer getVisibilityId() {
+        return visibilityId;
+    }
+
+    public void setVisibilityId(Integer visibilityId) {
+        this.visibilityId = visibilityId;
     }
 
     @Override

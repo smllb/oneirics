@@ -2,19 +2,34 @@ package com.lucid.oneiric.mappers;
 
 import com.lucid.oneiric.dto.DreamDTO;
 import com.lucid.oneiric.entities.DreamEntity;
+import lombok.NonNull;
+import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Component
 public class DreamMapper {
 
-    public static DreamDTO toDto(DreamEntity dreamEntity) {
-        DreamDTO dreamDTO = new DreamDTO();
-        dreamDTO.setDreamContent(dreamEntity.getDreamContent());
-        dreamDTO.setDreamCategoryId(dreamEntity.getDreamCategoryId());
-        dreamDTO.setDreamTitle(dreamEntity.getDreamTitle());
-        dreamDTO.setDreamKind(dreamEntity.getDreamKind());
-        dreamDTO.setAuthorId(dreamEntity.getAuthorId());
-        dreamDTO.setCreationDate(dreamEntity.getCreationDate());
-        dreamDTO.setDreamId(dreamEntity.getId());
-        return dreamDTO;
 
+    public DreamDTO dreamEntityToDto(@NonNull Optional<DreamEntity> dreamEntityOptional) {
+        try {
+            DreamDTO dreamDTO = new DreamDTO();
+            DreamEntity dreamEntity = dreamEntityOptional.get();
+            dreamDTO.setId(dreamEntity.getId());
+            dreamDTO.setDreamTitle(dreamEntity.getDreamTitle());
+            dreamDTO.setDreamContent(dreamEntity.getDreamContent());
+            dreamDTO.setDreamCategory(dreamEntity.getDreamCategoryEntity().getcategory());
+            dreamDTO.setCreationDate(dreamEntity.getCreationDate());
+            dreamDTO.setDreamKind(dreamEntity.getDreamKindEntity().getKind());
+            dreamDTO.setAuthorName(dreamEntity.getUserEntity().getLogin());
+            dreamDTO.setVisibilityName(dreamEntity.getVisibilityEntity().getName());
+
+            return dreamDTO;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
     }
 }

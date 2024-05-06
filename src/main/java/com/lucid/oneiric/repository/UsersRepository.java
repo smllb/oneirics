@@ -2,7 +2,6 @@ package com.lucid.oneiric.repository;
 
 import com.lucid.oneiric.entities.UserEntity;
 import lombok.NonNull;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +15,9 @@ public interface UsersRepository extends JpaRepository<UserEntity, String> {
     List<UserEntity> findByLogin(String login);
     List<UserEntity> findByEmail(String email);
     List<UserEntity> findByRecoveryEmail(String recoveryEmail);
+
+
+    void deleteById(@NonNull String id);
 
     default void deleteByUsername(String login) {
         List<UserEntity> loginQueryResult = findByLogin(login);

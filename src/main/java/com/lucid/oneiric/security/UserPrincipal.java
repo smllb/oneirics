@@ -32,6 +32,9 @@ public class UserPrincipal  implements UserDetails {
         return userEntity.getPassword();
     }
 
+
+    public String getId() { return userEntity.getId(); }
+
     @Override
     public String getUsername() {
         return userEntity.getLogin();
@@ -57,4 +60,7 @@ public class UserPrincipal  implements UserDetails {
     public boolean isEnabled() {
         return userEntity.isEnabled();
     }
+
+    public boolean isAdmin() { return userEntity.isAdmin(); }
+
 }

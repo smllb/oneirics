@@ -4,7 +4,6 @@ import com.lucid.oneiric.entities.UserEntity;
 import com.lucid.oneiric.repository.UsersRepository;
 import com.lucid.oneiric.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
